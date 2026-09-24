@@ -21,9 +21,13 @@ main       aggregator superproject
 backend    Bun HTTP server             -> ./backend
 frontend   Angular web client          -> ./frontend
 cli        CommonJS Node CLI           -> ./cli
+bundle     generated release output    -> ./bundle
 ```
 
-The submodules track their matching branches in the same GitHub repository.
+The submodules track their matching branches in the same GitHub repository. The
+`bundle` branch is generated output; do not hand-edit it. Rebuild it from the
+superproject with `node scripts/build-bundle.mjs`, or add `--push` to publish
+the generated bundle and updated main pointer.
 
 ## Clone
 
