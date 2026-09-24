@@ -1,0 +1,57 @@
+<main class="page-shell">
+  <header class="hero">
+    <p class="eyebrow">SNIP / URL SHORTENER</p>
+    <h1>Make links lighter.</h1>
+    <p class="intro">Paste a long URL and get a clean, shareable link in seconds.</p>
+
+    <form class="shorten-form" (submit)="$event.preventDefault(); submit()">
+      <label for="url">Long URL</label>
+      <div class="input-row">
+        <input
+          id="url"
+          type="url"
+          [value]="url()"
+          (input)="url.set($any($event.target).value)"
+          placeholder="https://example.com/a-very-long-link"
+          autocomplete="url"
+        />
+        <button type="submit" [disabled]="submitting()">
+          {{ submitting() ? "Shortening..." : "Shorten" }}
+        </button>
+      </div>
+    </form>
+
+    @if (createdLink(); as link) {
+      <p class="notice success">Your short link: <a [href]="link.shortUrl" target="_blank" rel="noreferrer">{{ link.shortUrl }}</a></p>
+    }
+    @if (error()) {
+      <p class="notice error" role="alert">{{ error() }}</p>
+    }
+  </header>
+
+  <section class="links-section" aria-labelledby="links-heading">
+    <div class="section-heading">
+      <h2 id="links-heading">Your links</h2>
+      <span>{{ links().length }} total</span>
+    </div>
+
+    @if (links().length) {
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Short code</th><th>Original URL</th><th>Hits</th></tr></thead>
+          <tbody>
+            @for (link of links(); track link.code) {
+              <tr>
+                <td><a [href]="link.shortUrl" target="_blank" rel="noreferrer">{{ link.code }}</a></td>
+                <td class="original-url" [title]="link.url">{{ link.url }}</td>
+                <td>{{ link.hits }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <p class="empty-state">No links yet. Your shortened URLs will appear here.</p>
+    }
+  </section>
+</main>
